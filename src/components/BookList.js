@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Button, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 const BookListScreen = ({ navigation }) => {
   const [booksData, setBooksData] = useState([]);
+
+  const navigate = useNavigation();
+
 
   useEffect(() => {
     console.log('Fetching books data...');
@@ -24,7 +29,7 @@ const BookListScreen = ({ navigation }) => {
     })
       .then(response => {
         if (response.ok) {
-          dispatch({ type: 'DELETE_BOOK', payload: bookId });
+          navigate.navigate('Home'); // Successful submission, navigate back to Home Screen
         }
       })
       .catch(error => console.error('Error deleting book:', error));

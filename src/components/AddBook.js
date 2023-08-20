@@ -47,7 +47,7 @@ const AddBookScreen = () => {
       });
   
       if (response.ok) {
-        navigate.goBack(); // Successful submission, navigate back to Book List Screen
+        navigate.navigate('Home'); // Successful submission, navigate back to Home Screen
       } else {
         console.error('Failed to submit book data');
       }
