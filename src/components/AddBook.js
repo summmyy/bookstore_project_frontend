@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -25,9 +25,20 @@ const AddBookScreen = () => {
           }
       }
 
-      const removeImage = () => {
-          setImage(null);
-      }
+      const handleImagePicker = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+        if (permissionResult.granted === false) {
+          alert('Permission to access camera roll is required!');
+          return;
+        }
+    
+        const pickerResult = await ImagePicker.launchImageLibraryAsync();
+        
+        if (!pickerResult.canceled) {
+          setImage(pickerResult.uri);
+        }
+      };
 
   const handleSubmit = async () => {
     const bookData = {
@@ -74,7 +85,8 @@ const AddBookScreen = () => {
       <TextInput placeholder="Title" value={title} onChangeText={setTitle} />
       <TextInput placeholder="Author" value={author} onChangeText={setAuthor} />
       <TextInput placeholder="Description" value={description} onChangeText={setDescription} />
-      <Button title='Upload Thumbnail' onPress={pick} color='green' mode='contained' />
+      {image && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+      <Button title='Upload Thumbnail' onPress={handleImagePicker} color='green' mode='contained' />
       {/* <Button title='Remove Thumbnail' onPress={removeImage} color='green' mode='contained' /> */}
       <Button title="Submit" onPress={handleSubmit} />
       <Button title='Go home' onPress={() => navigate.navigate('Home')} />
