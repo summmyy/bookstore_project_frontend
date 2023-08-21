@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { encode } from 'base-64';
 // import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 const AddBookScreen = () => {
@@ -13,17 +14,6 @@ const AddBookScreen = () => {
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null)
 
-
-      const pick = () => {
-          let result = ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ImagePicker.MediaTypeOptions.Images,
-              quality: 1,
-          });
-
-          if (!result.cancelled) {
-              setImage(result.uri);
-          }
-      }
 
       const handleImagePicker = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -40,6 +30,10 @@ const AddBookScreen = () => {
         }
       };
 
+      const username = 'admin'
+      const password = 'password123'
+      const authHeader = 'Basic ' + encode(`${username}:${password}`);
+
   const handleSubmit = async () => {
     const bookData = {
       title: title,
@@ -52,7 +46,8 @@ const AddBookScreen = () => {
       const response = await fetch('http://localhost:8080/books', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+                Authorization: authHeader,
+                'Content-Type': 'application/json'
         },
         body: JSON.stringify(bookData)
       });
