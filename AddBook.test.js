@@ -13,9 +13,6 @@ jest.mock('@react-navigation/native', () => {
 describe('AddBookScreen', () => {
   it('renders correctly', () => {
     
-    const mockUseNavigation = () => ({
-      navigate: jest.fn(),
-    });
 
     ReactNavigation.useNavigation.mockReturnValue({
       navigate: jest.fn(),
