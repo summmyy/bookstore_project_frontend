@@ -36,7 +36,7 @@ const BookListScreen = ({ navigation }) => {
     fetch(`http://localhost:8080/books/${bookId}`, {
       method: 'DELETE',
       headers : {
-        Authorization: `Basic ${btoa(`${username}:${password}`)}`,
+        Authorization: authHeader,
     }
     })
       .then(response => {
